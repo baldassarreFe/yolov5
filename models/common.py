@@ -164,6 +164,7 @@ class autoShape(nn.Module):
         with torch.no_grad():
             y = self.model(x, augment, profile)[0]  # forward
         y = non_max_suppression(y, conf_thres=self.conf, iou_thres=self.iou, classes=self.classes)  # NMS
+        y = [yy.to(p.device) for yy in y] # workaround https://github.com/ultralytics/yolov5/issues/1617
 
         # Post-process
         for i in batch:
